@@ -5,13 +5,13 @@ import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
 
 import AddUserComponent from './components/authentication/addUser.component';
-import LogoutComponent from './components/authentication/addUser.component';
+import LogoutComponent from './components/authentication/logout.component';
 import Authentication from './components/authentication/authentication.component';
 import AddNoteComponent from './components/notes/addNote.component';
 import ViewWeatherComponent from './components/weather/viewWeather.component';
 import ViewNoteComponent from './components/notes/viewNote.component';
 import ViewAllNotesComponent from './components/notes/viewAllNotes.component';
-
+import allPredifinedComponent  from './components/notes/allPredifined.component';
 
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
@@ -32,7 +32,8 @@ const Routes = () => ( // a function component (as component are not necessarily
                     <Route exact path="/weather" component={ViewWeatherComponent} />
                     <Route exact path="/note" component={ViewNoteComponent} />
                     <Route exact path="/viewallnotes" component={ViewAllNotesComponent} />
-                    {/* <Route exact path="/logout" component={LogoutComponent} /> */}
+                    <Route exact path="/allpredifined" component={allPredifinedComponent} />
+                 <Route exact path="/logout" component={LogoutComponent} /> }
 
 
                     <Route exact path="/">

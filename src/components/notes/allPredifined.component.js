@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { getAllNotes } from '../../services/note.services';
+import { getAllNotes, getAllPredifinedNotes, updatePredifinedNote } from '../../services/note.services';
 
 //for redux
 import { connect } from 'react-redux';
@@ -7,7 +7,7 @@ import { dispatchNewCred } from '../../actions/authentication.action';
 import { login } from '../../services/authentication.services';
 
 
-class ViewAllNotesComponent extends Component {
+class allPredifinedComponent extends Component {
     constructor(props) {
         super(props);
         this.state = { // this is a JSON object
@@ -20,7 +20,7 @@ class ViewAllNotesComponent extends Component {
             authenticatedMobileNumber:"",
             authenticatedRole:"",
             authenticatedMyWeatherNotes:"",
-            allNotes:[]
+            allPredifinedNotes:[]
         }
     }
 
@@ -31,8 +31,9 @@ class ViewAllNotesComponent extends Component {
         }else if(this.props.globalState.creds.role.id != "1"){
             this.props.history.push("/weather")
         }
-        getAllNotes({ email:this.props.globalState.creds.email, password: this.props.globalState.creds.password}).then(result => {
-            this.setState({allNotes: result.data});
+        getAllPredifinedNotes({ email:this.props.globalState.creds.email, password: this.props.globalState.creds.password}).then(result => {
+            console.log(result.data);
+            this.setState({allPredifinedNotes: result.data});
         }).catch((err) => { })
 
         this.setState({
@@ -52,16 +53,25 @@ class ViewAllNotesComponent extends Component {
 
     myNotesRender(){
         
-        
-        return this.state.allNotes.map((myNote, index) => {
-            console.log("id: "+this.state.authenticatedID);
-            console.log("id: "+myNote.user_id);
+        let predifinedNotes = this.state.allPredifinedNotes;
+        return this.state.allPredifinedNotes.map((myNote, index) => {
             return(
-                
             <tr>
-                <td>{myNote.note}</td>
-                <td>{(new Date(myNote.date)).toDateString()}</td>
+                <td>{myNote.minimumTemprature}</td>
+                <td>{myNote.maximumTemperature}</td>
+                <td><input required="" type="text" value={myNote.message} onChange={(e) => {
+                    predifinedNotes[index].message = e.target.value;
+                    this.setState({allPredifinedNotes: predifinedNotes});
+                }} className="form-control" name="contact[name][required]" id="contact:name" /></td>
             </tr>)
+        });
+    }
+
+    savePredifinedNoteEvent(e) {
+        e.preventDefault();
+        this.state.allPredifinedNotes.map((myNote, index) => {
+            updatePredifinedNote({ id: myNote.id, maximum_temperature: myNote.maximum_temperature, minimum_temprature:myNote.minimum_temperature, message:myNote.message },
+            { email:this.props.globalState.creds.email, password: this.props.globalState.creds.password}).then();
         });
     }
 
@@ -72,14 +82,21 @@ class ViewAllNotesComponent extends Component {
               <table className="table table-hover">
                 <thead>
                     <tr>
-                        <th>My Old Notes :</th>
-                        <th>Date</th>
+                        <th>Minimum Temprature</th>
+                        <th>Maximum Temprature</th>
+                        <th>Message</th>
                     </tr>
                 </thead>
                 <tbody >
                     {this.myNotesRender()}
                 </tbody>
             </table>
+                <div className="row">
+                                <div className="col-md-3">
+                                    <br />
+                                    <button className="btn btn-primary" onClick={this.savePredifinedNoteEvent.bind(this)}><i className="fa fa-check"></i>Update</button>
+                                </div>
+                </div>
             </div>
         )
     }
@@ -95,4 +112,4 @@ function mapGlobalStateToProps(globalState) {
     }
 }
 
-export default connect(mapGlobalStateToProps, { dispatchNewCred })(ViewAllNotesComponent);
+export default connect(mapGlobalStateToProps, { dispatchNewCred })(allPredifinedComponent);

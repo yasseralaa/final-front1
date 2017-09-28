@@ -25,11 +25,12 @@ class LogoutComponent extends Component {
 
 
     componentDidMount() {
-        console.log("kokooooo");
-        console.log(this.props.globalState.creds);
-        this.props.dispatchNewCred([]);
-        console.log(this.props.globalState.creds);
-        //this.props.history.push("/login");
+        console.log("logout");
+        logout({email: this.state.emailLogin,password: this.state.passwordLogin}
+        ).then(res => {
+                this.props.dispatchNewCred([]);
+                this.props.history.push("/login");
+          })
     }
 
 

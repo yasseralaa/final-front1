@@ -24,10 +24,22 @@ class Authentication extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props.globalState.creds)
+        if(this.props.globalState.creds.name != undefined){
+            this.props.history.push("/weather");
+        }
+        /*if(this.props.globalState.creds.id == "1")
+            {
+                console.log("hereeer")
+            this.props.history.push("/weather");
+        }
+        else if(this.props.globalState.creds.id != null)
+            this.props.history.push("/weather");
+
         if (this.props.globalState.creds.role != undefined) {
            this.props.dispatchNewCred([]);
            this.props.history.push("/login");
-        }
+        }*/
     }
     
 
@@ -51,7 +63,7 @@ class Authentication extends Component {
             .then(res => {
                 console.log("in res");
                 console.log(res.data);
-
+                this.props.dispatchNewCred(res.data)
                 if (res == null || res.data.role.id == null || res.data.role.id > 2) {
                     console.log("Doesn't Exist");
                 }
@@ -87,7 +99,7 @@ class Authentication extends Component {
                             <div className="row">
                                 <div className="col-md-12">
                                     <label htmlFor="contact:name">Password</label>
-                                    <input required="" type="text" value={this.state.userPassword} onChange={this.inputPasswordChanged.bind(this)} className="form-control" name="contact[name][required]" id="contact:name" />
+                                    <input required="" type="password" value={this.state.userPassword} onChange={this.inputPasswordChanged.bind(this)} className="form-control" name="contact[name][required]" id="contact:name" />
                                 </div>
                             </div>
 

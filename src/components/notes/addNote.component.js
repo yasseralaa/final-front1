@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { addNote } from '../../services/note.services';
+import { addNote, checkTodaysNoteSet, getNote, updateNote } from '../../services/note.services';
 
 //for redux
 import { connect } from 'react-redux';
 import { dispatchNewCred } from '../../actions/authentication.action';
+import { dispatchNewNote } from '../../actions/notes.action';
 
 
 class AddNoteComponent extends Component {
@@ -11,6 +12,7 @@ class AddNoteComponent extends Component {
         super(props);
         this.state = { // this is a JSON object
             weatherNote: "",
+            isWeatherNoteExist: "",
             errormsg: "",
             authenticatedID: "",
             authenticatedName: "",
@@ -25,6 +27,17 @@ class AddNoteComponent extends Component {
 
     componentDidMount() {
         console.log("IN ADD NOTE");
+        
+        getNote({email:this.props.globalState.creds.email, password: this.props.globalState.creds.password}).then(res => {
+            
+            console.log(res.data);
+            this.setState({weatherNote: res.data});
+            this.props.dispatchNewNote(res.data);
+            console.log("my note:-");
+            console.log(this.props.globalState2.note);
+        })
+
+
         if (this.props.globalState.creds.role === undefined) {
             this.props.history.push("/login");
         } else if (this.props.globalState.creds.role.id != "1") {
@@ -70,10 +83,13 @@ class AddNoteComponent extends Component {
 
     addNoteEvent(e) {
         e.preventDefault();
-        // alert(this.today());
-        // this.props.globalState.creds.weatherNotes.add({});
-        addNote({ adminID: this.state.authenticatedID, weatherDate: this.today(), weatherNote: this.state.weatherNote },
-        { email:this.props.globalState.creds.email, password: this.props.globalState.creds.password}).then();
+                addNote({ id: this.state.authenticatedID, date: this.today(), note: this.state.weatherNote },
+                { email:this.props.globalState.creds.email, password: this.props.globalState.creds.password}).then();
+                this.props.dispatchNewNote(this.state.weatherNote);
+                this.setState({isWeatherNoteExist: true});
+                console.log("my note3:-");
+                console.log(this.props.globalState2.note);
+
     }
 
     render() {
@@ -107,8 +123,9 @@ class AddNoteComponent extends Component {
 
 function mapGlobalStateToProps(globalState) {
     return {
-        globalState: globalState.creds
+        globalState: globalState.creds,
+        globalState2: globalState.note
     }
 }
 
-export default connect(mapGlobalStateToProps, { dispatchNewCred })(AddNoteComponent);
+export default connect(mapGlobalStateToProps, { dispatchNewCred, dispatchNewNote })(AddNoteComponent);

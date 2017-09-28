@@ -31,10 +31,11 @@ class ViewWeatherComponent extends Component {
 
     componentDidMount() {
         console.log("IN view weather");
-        if(this.props.globalState.creds.role === undefined){
+        console.log(this.props.globalState.creds)
+        if(this.props.globalState.creds.name === undefined){
             this.props.history.push("/login");
         }
-
+        
 
         this.setState({
             authenticatedID: this.props.globalState.creds.id,
@@ -45,7 +46,7 @@ class ViewWeatherComponent extends Component {
             authenticatedRole: this.props.globalState.creds.role,
             authenticatedMyWeatherNotes: this.props.globalState.creds.weatherNotes
         });
-
+        
 
         getWeather({ email:this.props.globalState.creds.email, password: this.props.globalState.creds.password}).then(result => {
             // console.log(data)
@@ -60,12 +61,6 @@ class ViewWeatherComponent extends Component {
             });
 
         }).catch((err) => { })
-
-        
-
-
-        console.log(this.props.globalState.creds);
-
     }
 
 

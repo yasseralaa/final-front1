@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const baseURL = "http://localhost:8080";
+const baseURL = "http://localhost:80";
 
 export function addUser (userData){
     console.log("addUser service");
@@ -33,5 +33,22 @@ export function login (userData){
             password:userData.password
         },
         url: baseURL + "/users/login"
+    });
+}
+
+export function logout(userData)
+{
+    console.log("get notes");
+    return axios({
+        method:'get',
+        headers:{
+            'X-Requested-With':'XMLHttpRequest'
+        },
+        withCredentials:true,
+        auth:{
+            username:userData.email,
+            password:userData.password
+        },
+        url: baseURL +  "/users/logout"
     });
 }

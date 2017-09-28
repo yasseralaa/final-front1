@@ -63,7 +63,12 @@ class HeaderComponent extends Component {
                          </Link>
                     </li>
                     <li>
-                        <Link to="/login">
+                        <Link to="/allpredifined">
+                            View predifined notes
+                         </Link>
+                    </li>
+                    <li>
+                        <Link to="/logout">
                             Logout
                         </Link>
                     </li>
@@ -84,7 +89,7 @@ class HeaderComponent extends Component {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/login">
+                        <Link to="/logout">
                             Logout
                      </Link>
                     </li>

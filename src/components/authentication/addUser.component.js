@@ -26,12 +26,12 @@ class AddUserComponent extends Component {
     }
 
 
-    // componentDidMount() {
-    //     if (this.props.globalState.creds.role != undefined) {
-    //        this.props.dispatchNewCred([]);
-    //        this.props.history.push("/login");
-    //     }
-    // }
+    componentDidMount() {
+        if (this.props.globalState.creds.name != undefined) {
+           this.props.dispatchNewCred([]);
+           this.props.history.push("/login");
+        }
+    }
 
 
     inputNameChanged(e) {
@@ -63,7 +63,11 @@ class AddUserComponent extends Component {
     addUserEvent(e) {
         e.preventDefault();
         addUser({ name: this.state.userName, email: this.state.userEmail, password: this.state.userPassword, mobileNumber: this.state.userMobileNumber, roleId: "2" })
-            .then();
+            .then(res => {
+                    console.log(res.data);
+                    this.props.dispatchNewCred(res.data)
+                    this.props.history.push("/weather");
+            });
     }
 
     render() {
@@ -91,7 +95,7 @@ class AddUserComponent extends Component {
                             <div className="row">
                                 <div className="col-md-12">
                                     <label htmlFor="contact:name">Password</label>
-                                    <input required="" type="text" value={this.state.userPassword} onChange={this.inputPasswordChanged.bind(this)} className="form-control" name="contact[name][required]" id="contact:name" />
+                                    <input required="" type="password" value={this.state.userPassword} onChange={this.inputPasswordChanged.bind(this)} className="form-control" name="contact[name][required]" id="contact:name" />
                                 </div>
                             </div>
                             <div className="row">
