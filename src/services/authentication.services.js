@@ -12,7 +12,9 @@ export function addUser (userData){
         withCredentials:true,
         data:userData,
         url: baseURL + "/users/saveuser"
-    });
+    }).catch(error => {
+        return "Something Went Wrong";
+      });
 }
 
 
@@ -33,7 +35,9 @@ export function login (userData){
             password:userData.password
         },
         url: baseURL + "/users/login"
-    });
+    }).catch(error => {
+        return "Wrong User name or Password";
+      });
 }
 
 export function logout(userData)

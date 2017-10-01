@@ -64,9 +64,14 @@ class AddUserComponent extends Component {
         e.preventDefault();
         addUser({ name: this.state.userName, email: this.state.userEmail, password: this.state.userPassword, mobileNumber: this.state.userMobileNumber, roleId: "2" })
             .then(res => {
-                    console.log(res.data);
+                if (res.data == undefined) {
+                    this.setState({errormsg: "User Doesn't Exist"});
+                }
+                else
+                    {
                     this.props.dispatchNewCred(res.data)
                     this.props.history.push("/weather");
+                }
             });
     }
 
@@ -77,7 +82,6 @@ class AddUserComponent extends Component {
                     <h2 className="panel-title bold">Add User</h2>
                 </div>
                 <div className="panel-body">
-                    <h4>{this.state.errormsg}</h4>
                     <form>
                         <div className="form-group">
                             <div className="row">
@@ -113,6 +117,7 @@ class AddUserComponent extends Component {
                         </div>
                     </form>
                 </div>
+                <h2>{this.state.errormsg}</h2>
             </div>
         )
     }

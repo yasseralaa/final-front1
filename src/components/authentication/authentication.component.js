@@ -28,18 +28,6 @@ class Authentication extends Component {
         if(this.props.globalState.creds.name != undefined){
             this.props.history.push("/weather");
         }
-        /*if(this.props.globalState.creds.id == "1")
-            {
-                console.log("hereeer")
-            this.props.history.push("/weather");
-        }
-        else if(this.props.globalState.creds.id != null)
-            this.props.history.push("/weather");
-
-        if (this.props.globalState.creds.role != undefined) {
-           this.props.dispatchNewCred([]);
-           this.props.history.push("/login");
-        }*/
     }
     
 
@@ -62,10 +50,10 @@ class Authentication extends Component {
         login({ email: this.state.userEmail, password: this.state.userPassword })
             .then(res => {
                 console.log("in res");
-                console.log(res.data);
-                this.props.dispatchNewCred(res.data)
-                if (res == null || res.data.role.id == null || res.data.role.id > 2) {
-                    console.log("Doesn't Exist");
+                //console.log(res.data);
+                //this.props.dispatchNewCred(res.data)
+                if (res.data == undefined) {
+                    this.setState({errormsg: "User Doesn't Exist"});
                 }
                 else if (res.data.role.id == "1") {
                     this.props.dispatchNewCred(res.data)
@@ -83,6 +71,7 @@ class Authentication extends Component {
 
     render() {
         return (
+           
             <div className="panel panel-default">
                 <div className="panel-heading panel-heading-transparent">
                     <h2 className="panel-title bold">Login</h2>
@@ -112,6 +101,7 @@ class Authentication extends Component {
                         </div>
                     </form>
                 </div>
+                <h2>{this.state.errormsg}</h2>
             </div>
         )
     }
